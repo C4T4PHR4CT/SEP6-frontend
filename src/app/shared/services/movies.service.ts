@@ -75,11 +75,11 @@ export class MoviesService {
       response = await lastValueFrom(
         this.http.get<Movie[]>(`https://api.themoviedb.org/3/search/movie?api_key=0859f3a7791c504d30a087517505495c&language=en-US&query=${movieName}&page=1&include_adult=false`)
       );
-      return response;
     }
     else
     {
-
+      response = await lastValueFrom(this.http.get<Movie[]>(`https://api.themoviedb.org/3/discover/movie?api_key=0859f3a7791c504d30a087517505495c&language=en-US&include_adult=false&include_video=false&page=1&with_genres=${genres.toString()}`));
     }
+    return response;
   }
 }

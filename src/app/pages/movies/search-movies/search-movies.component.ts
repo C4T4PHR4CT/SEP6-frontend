@@ -44,7 +44,15 @@ export class SearchMoviesComponent implements OnInit {
     }
     else
     {
-
+      this.moviesService.searchForMovies(null, this.searchForm.value.genre).then((data) =>{
+        if(data)
+        {
+          //@ts-ignore
+          this.moviesFound = data.results;
+          console.log(data)
+        }
+      }
+      );
     }
 
   }
