@@ -31,6 +31,8 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 const materialModules = [
@@ -65,7 +67,9 @@ const materialModules = [
   MatSliderModule,
   MatTooltipModule,
   MatFormFieldModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatGridListModule,
+  ReactiveFormsModule
 ];
 
 @NgModule({

@@ -1,0 +1,25 @@
+
+img{
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.mat-card-content
+{
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: 10px;
+}
+
+
+.content-section
+{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 100px 0;
+  position: relative;
+  background-size: cover!important;
+  overflow-x: hidden;
+}

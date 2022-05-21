@@ -1,7 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
-mat-toolbar{
-  background-color: #00bcd4 !important;
+@import "~bootstrap/dist/css/bootstrap.css";
+
+.mat-button{
+  width: 100px;
+  margin-bottom: 10px!important;
 }
+
 
 html {
   -webkit-box-sizing: border-box;
@@ -17,15 +20,4 @@ body {
   min-height: 100%;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
   background-color: white;
-  text-align: center;
-}
-
-.container {
-  /* height: 100%;
-  overflow: hidden; */
-  position: absolute;
-  top: 50px;
-  left: 50px;
-  bottom: 50px;
-  right: 50px;
 }

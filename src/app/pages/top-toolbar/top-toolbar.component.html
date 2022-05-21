@@ -1,0 +1,14 @@
+<mat-toolbar color="primary"><mat-toolbar-row>
+  <span>Definitely not IMDB</span>
+  <span class="space"></span>
+  <button [matMenuTriggerFor]="menu" mat-icon-button>
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar-row></mat-toolbar>
+
+<mat-menu #menu="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item [routerLink]="'personal'">My Profile</button>
+    <button mat-menu-item>Log Out</button>
+  </ng-template>
+</mat-menu>

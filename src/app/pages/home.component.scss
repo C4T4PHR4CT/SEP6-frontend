@@ -1,0 +1,16 @@
+mat-sidenav-container{
+  height: 100% !important;
+}
+
+mat-sidenav, mat-sidenav-content{
+  padding: 16px
+}
+mat-sidenav{
+  width: 200px;
+}
+
+.home-container {
+  height: 100%;
+  display:grid;
+  grid-template-rows: auto 1fr;
+}
