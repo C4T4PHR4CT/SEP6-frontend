@@ -56,6 +56,15 @@ export class MovieComponent implements OnInit, OnDestroy {
     );
   }
 
+  public checkIfAny(companies: any): boolean
+  {
+    if(companies.length > 0)
+    {
+      return true;
+    }
+    return false;
+  }
+
   public routeToMovie(movie: Movie): void {
     this.router.navigateByUrl(`/movies/${movie.id}`);
   }

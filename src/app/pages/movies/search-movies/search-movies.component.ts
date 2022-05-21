@@ -1,7 +1,8 @@
-import { Genre } from './../../../shared/models/movie';
+import { Genre, Movie } from './../../../shared/models/movie';
 import { Component, OnInit } from '@angular/core';
 import { MoviesService } from 'src/app/shared/services/movies.service';
 import { FormBuilder, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,20 +16,40 @@ export class SearchMoviesComponent implements OnInit {
     genre: new FormControl(''),
   });
   public movieGenres: Genre[] = [];
-  constructor(private moviesService: MoviesService, private formBuilder: FormBuilder) {}
+  public moviesFound: Movie[] = [];
+  constructor(private moviesService: MoviesService, private formBuilder: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
     this.moviesService.getMovieGenres().then((data) => {
       if (data) {
         //@ts-ignore
         this.movieGenres = data.genres;
-        //@ts-ignore
-        console.log(this.movieGenres[0].name);
       }
     });
 
   }
 
   public search():void{
+    if(this.searchForm.value.search !== "")
+    {
+      this.moviesService.searchForMovies(this.searchForm.value.search, []).then((data) =>{
+        if(data)
+        {
+          //@ts-ignore
+          this.moviesFound = data.results;
+          console.log(data)
+        }
+      }
+      );
+    }
+    else
+    {
+
+    }
+
+  }
+
+  public routeToMovie(movie: Movie): void {
+    this.router.navigateByUrl(`/movies/${movie.id}`);
   }
 }

@@ -12,7 +12,7 @@ export interface Movie {
   runtime: string;
   revenue: string;
   genres: Genre[];
-  production_companies: ProductionCompany[];
+  production_companies?: ProductionCompany[];
 }
 
 export interface Genre {
