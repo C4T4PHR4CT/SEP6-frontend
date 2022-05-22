@@ -11,11 +11,11 @@ const routes: Routes = [
     component: MoviesComponent,
     children: [
       {
-        path: 'popular',
+        path: 'search',
         component: PopularComponent
       },
       {
-        path: 'search',
+        path: 'discover',
         component: SearchMoviesComponent,
       },
       {
