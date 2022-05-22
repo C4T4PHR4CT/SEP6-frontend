@@ -1,37 +1,24 @@
-<!-- <div class="container">
-
-  <div class="row d-flex justify-content-center align-items-center">
-
-    <div class="col-md-8">
-
-      <div class="search">
-        <i class="fa fa-search"></i>
-        <input type="text" class="form-control" placeholder="Search for movie">
-        <button class="btn btn-primary">Search</button>
-      </div>
-
-
-
-    </div>
-
-  </div>
-</div> -->
 <div class="container-fluid">
   <div class="row">
   <form [formGroup]="searchForm">
-  <mat-form-field>
-    <mat-label>Movie Name</mat-label>
-    <input formControlName="search" matInput>
-
-  </mat-form-field>
     <mat-form-field>
       <mat-label>Genres</mat-label>
       <mat-select formControlName="genre" multiple>
         <mat-option *ngFor="let genre of movieGenres" [value]="genre.id">{{genre.name}}</mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>Sort By</mat-label>
+      <mat-select formControlName="sortBy">
+        <mat-option *ngFor="let option of sortOptions" [value]="option.value">{{option.viewValue}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Year released</mat-label>
+      <input formControlName="year" matInput  type="number"/>
+    </mat-form-field>
+    <button class="btn btn-primary" (click)="search()">Search</button>
     </form>
-    <button mat-button (click)="search()">Search</button>
   </div>
 
   <div class="row">

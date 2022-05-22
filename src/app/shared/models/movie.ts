@@ -20,9 +20,71 @@ export interface Genre {
   name: string;
 }
 
-export interface ProductionCompany
-{
+export interface SortOptions {
+  value: string;
+  viewValue: string;
+}
+export interface ProductionCompany {
   id: number;
   name: string;
   origin_country: string;
 }
+
+export const SORT_BY_OPTIONS: SortOptions[] = [
+  {
+    value: 'popularity.desc',
+    viewValue: 'Popularity',
+  },
+  {
+    value: 'popularity.asc',
+    viewValue: 'Popularity (ascending)',
+  },
+  {
+    value: 'release_date.desc',
+    viewValue: 'Release date',
+  },
+  {
+    value: 'release_date.asc',
+    viewValue: 'Release date (ascending)',
+  },
+  {
+    value: 'revenue.desc',
+    viewValue: 'Revenue',
+  },
+  {
+    value: 'revenue.asc',
+    viewValue: 'Revenue (ascending)',
+  },
+  {
+    value: 'primary_release_date.desc',
+    viewValue: 'Primary release date',
+  },
+  {
+    value: 'primary_release_date.asc',
+    viewValue: 'Primary release date (ascending)',
+  },
+  {
+    value: 'original_title.desc',
+    viewValue: 'Original title',
+  },
+  {
+    value: 'original_title.asc',
+    viewValue: 'Original title (ascending)',
+  },
+  {
+    value: 'vote_average.desc',
+    viewValue: 'Vote average',
+  },
+  {
+    value: 'vote_average.asc',
+    viewValue: 'Vote average (ascending)',
+  },
+  {
+    value: 'vote_count.desc',
+    viewValue: 'Vote count',
+  },
+  {
+    value: 'vote_count.asc',
+    viewValue: 'Vote count (ascending)',
+  },
+];

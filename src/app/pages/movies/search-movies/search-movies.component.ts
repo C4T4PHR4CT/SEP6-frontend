@@ -1,9 +1,8 @@
-import { Genre, Movie } from './../../../shared/models/movie';
+import { Genre, Movie, SortOptions, SORT_BY_OPTIONS } from './../../../shared/models/movie';
 import { Component, OnInit } from '@angular/core';
 import { MoviesService } from 'src/app/shared/services/movies.service';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-search-movies',
@@ -11,13 +10,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./search-movies.component.scss'],
 })
 export class SearchMoviesComponent implements OnInit {
-  public searchForm = this.formBuilder. group({
-    search: new FormControl(''),
-    genre: new FormControl(''),
+  public searchForm = this.formBuilder.group({
+    sortBy: new FormControl('', [Validators.required]),
+    genre: new FormControl('', [Validators.required]),
+    year: new FormControl(''),
   });
   public movieGenres: Genre[] = [];
   public moviesFound: Movie[] = [];
-  constructor(private moviesService: MoviesService, private formBuilder: FormBuilder, private router: Router) {}
+  public sortOptions = SORT_BY_OPTIONS;
+  constructor(
+    private moviesService: MoviesService,
+    private formBuilder: FormBuilder,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.moviesService.getMovieGenres().then((data) => {
@@ -26,35 +31,23 @@ export class SearchMoviesComponent implements OnInit {
         this.movieGenres = data.genres;
       }
     });
-
+    this.moviesService.getPopularMovies().then((data) => {
+      if (data) {
+        //@ts-ignore
+        this.moviesFound = data.results;
+      }
+    }
+    );
   }
 
-  public search():void{
-    if(this.searchForm.value.search !== "")
-    {
-      this.moviesService.searchForMovies(this.searchForm.value.search, []).then((data) =>{
-        if(data)
-        {
-          //@ts-ignore
-          this.moviesFound = data.results;
-          console.log(data)
-        }
+  public search(): void {
+    this.moviesService.discoverMovies(this.searchForm.value.sortBy, this.searchForm.value.genre, this.searchForm.value.year).then((data) => {
+      if (data) {
+        //@ts-ignore
+        this.moviesFound = data.results;
       }
-      );
     }
-    else
-    {
-      this.moviesService.searchForMovies(null, this.searchForm.value.genre).then((data) =>{
-        if(data)
-        {
-          //@ts-ignore
-          this.moviesFound = data.results;
-          console.log(data)
-        }
-      }
-      );
-    }
-
+    );
   }
 
   public routeToMovie(movie: Movie): void {

@@ -7,29 +7,16 @@ import {
   ReplaySubject,
 } from 'rxjs';
 import { HttpsResponse } from '../models/http.model';
-import { Genre, Movie } from '../models/movie';
+import { Genre, Movie, SortOptions } from '../models/movie';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MoviesService {
   public movie$: ReplaySubject<Movie> = new ReplaySubject<Movie>();
-  public popularMovies$: BehaviorSubject<Movie[]> = new BehaviorSubject<
-    Movie[]
-  >([]);
-
-  private popularMoviesUrl: string =
-    'https://api.themoviedb.org/3/movie/popular?api_key=0859f3a7791c504d30a087517505495c&language=en-US&page=1';
-
-  constructor(private http: HttpClient) {
-    this.init();
-  }
-
-  private init(): void {
-    this.http
-      .get<Movie[]>(this.popularMoviesUrl)
-      .subscribe((res) => this.popularMovies$.next(res));
-  }
+  public apiKey: string = '0859f3a7791c504d30a087517505495c';
+  public language: string = 'en-US';
+  constructor(private http: HttpClient) {}
 
   public setSelectedMovie(movie: Movie): void {
     this.movie$.next(movie);
@@ -50,36 +37,91 @@ export class MoviesService {
   }
 
   public async getMovieRecommendations(movieId: number): Promise<Movie[]> {
+    let params = this.appendBasics();
+    params = params.append('page', '1');
     const response = await lastValueFrom(
       this.http.get<Movie[]>(
-        `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=0859f3a7791c504d30a087517505495c&language=en-US&page=1`
+        `https://api.themoviedb.org/3/movie/${movieId}/similar`, { params }
+      )
+    );
+    return response;
+  }
+
+  public async getPopularMovies(): Promise<Movie[]> {
+    let params = this.appendBasics();
+    params.append('page', '1');
+    const response = await lastValueFrom(
+      this.http.get<Movie[]>(
+        'https://api.themoviedb.org/3/movie/popular', { params }
       )
     );
     return response;
   }
 
   public async getMovieGenres(): Promise<Genre[]> {
+    let params = this.appendBasics();
+
     const response = await lastValueFrom(
       this.http.get<Genre[]>(
-        `https://api.themoviedb.org/3/genre/movie/list?api_key=0859f3a7791c504d30a087517505495c&language=en-US`
+        `https://api.themoviedb.org/3/genre/movie/list`, { params }
       )
     );
     return response;
   }
 
-  public async searchForMovies(movieName: string | null, genres: Genre[])
-  {
-    let response;
-    if(movieName)
-    {
-      response = await lastValueFrom(
-        this.http.get<Movie[]>(`https://api.themoviedb.org/3/search/movie?api_key=0859f3a7791c504d30a087517505495c&language=en-US&query=${movieName}&page=1&include_adult=false`)
-      );
+  public async searchForMovies(
+    movieName: string,
+    year?: number,
+    page?: number
+  ): Promise<Movie[]> {
+    let params = this.appendBasics();
+    if (movieName) {
+      params = params.append('query', movieName);
     }
-    else
-    {
-      response = await lastValueFrom(this.http.get<Movie[]>(`https://api.themoviedb.org/3/discover/movie?api_key=0859f3a7791c504d30a087517505495c&language=en-US&include_adult=false&include_video=false&page=1&with_genres=${genres.toString()}`));
+    if (year) {
+      params = params.append('year', year.toString());
     }
+    if (page) {
+      params = params.append('page', page.toString());
+    }
+    const response = await lastValueFrom(
+      this.http.get<Movie[]>(`https://api.themoviedb.org/3/search/movie`, {
+        params,
+      })
+    );
+    // } else {
+    //   response = await lastValueFrom(
+    //     this.http.get<Movie[]>(
+    //       `https://api.themoviedb.org/3/discover/movie?api_key=0859f3a7791c504d30a087517505495c&language=en-US&include_adult=false&include_video=false&page=1&with_genres=${genres.toString()}`
+    //     )
+    //   );
+    // }
     return response;
+  }
+
+  public async discoverMovies(sortBy: string, genres:Genre[], year?: number) {
+    console.log(sortBy);
+    let params = this.appendBasics();
+    params = params.append('sort_by', sortBy);
+    if (genres.length > 0) {
+      params = params.append('with_genres', genres.toString());
+    }
+    if (year) {
+      params = params.append('year', year.toString());
+    }
+    const response = await lastValueFrom(
+      this.http.get<Movie[]>(
+        `https://api.themoviedb.org/3/discover/movie`, { params }
+      )
+    );
+    return response;
+  }
+
+  public appendBasics(): HttpParams
+  {
+    let params = new HttpParams();
+    params = params.append('api_key', this.apiKey);
+    params = params.append('language', this.language);
+    return params;
   }
 }
