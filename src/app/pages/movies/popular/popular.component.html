@@ -7,13 +7,13 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Year released</mat-label>
-        <input formControlName="year" matInput  type="number"/>
+        <input formControlName="year" matInput type="number" />
       </mat-form-field>
       <button class="btn btn-primary" (click)="search()">Search</button>
     </form>
   </div>
   <div class="row">
-    <div class="col-md-6 col-sm-8 col-lg-2 my-5" *ngFor="let movie of movies">
+    <div class="col-md-6 col-sm-8 col-lg-2 my-5" *ngFor="let movie of movies | paginate: { itemsPerPage: 20, currentPage: page, totalItems: total}">
       <div
         class="card h-100"
         (click)="routeToMovie(movie)"
@@ -32,10 +32,15 @@
         </div>
       </div>
     </div>
+    <pagination-controls *ngIf="movies?.length > 0"
+    previousLabel="Prev"
+    nextLabel="Next"
+    (pageChange)="handlePageChange($event)"
+  ></pagination-controls>
   </div>
   <div class="row" *ngIf="movies?.length === 0">
     <div class="col-md-12">
-      <h1>No movies found</h1>
+      <h1>No movies, enter a search query</h1>
     </div>
   </div>
 </div>

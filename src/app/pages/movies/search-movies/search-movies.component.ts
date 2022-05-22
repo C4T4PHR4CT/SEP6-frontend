@@ -31,7 +31,7 @@ export class SearchMoviesComponent implements OnInit {
         this.movieGenres = data.genres;
       }
     });
-    this.moviesService.getPopularMovies().then((data) => {
+    this.moviesService.getPopularMovies(1).then((data) => {
       if (data) {
         //@ts-ignore
         this.moviesFound = data.results;

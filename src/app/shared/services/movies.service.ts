@@ -47,9 +47,9 @@ export class MoviesService {
     return response;
   }
 
-  public async getPopularMovies(): Promise<Movie[]> {
+  public async getPopularMovies(page: number): Promise<Movie[]> {
     let params = this.appendBasics();
-    params.append('page', '1');
+    params = params.append('page', page.toString());
     const response = await lastValueFrom(
       this.http.get<Movie[]>(
         'https://api.themoviedb.org/3/movie/popular', { params }
@@ -122,6 +122,7 @@ export class MoviesService {
     let params = new HttpParams();
     params = params.append('api_key', this.apiKey);
     params = params.append('language', this.language);
+
     return params;
   }
 }
