@@ -12,7 +12,7 @@ const routes: Routes = [
         loadChildren: () => import('./movies/movies.module').then(m => m.MoviesModule)
       },
       { path: 'personal', component: PersonalComponent},
-      { path: '**', redirectTo: 'movies/popular'}
+      { path: '**', redirectTo: 'movies/search'}
     ]
   }
 ];
