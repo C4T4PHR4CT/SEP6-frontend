@@ -2,10 +2,6 @@ map $http_authorization $token {
     ~^Bearer\s+(?<bearer>[\S]+)$ $bearer;
 }
 
-events {
-  worker_connections  4096;
-}
-
 server {
   listen ${PORT} default_server;
   server_name _;
