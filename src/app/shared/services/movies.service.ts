@@ -99,8 +99,7 @@ export class MoviesService {
     return response;
   }
 
-  public async discoverMovies(sortBy: string, genres:Genre[], year?: number): Promise<MovieSearchResult>{
-    console.log(sortBy);
+  public async discoverMovies(sortBy: string, genres:Genre[] | string[], year?: number, page?: number): Promise<MovieSearchResult>{
     let params = this.appendBasics();
     params = params.append('sort_by', sortBy);
     if (genres.length > 0) {
@@ -108,6 +107,10 @@ export class MoviesService {
     }
     if (year) {
       params = params.append('year', year.toString());
+    }
+    if(page)
+    {
+      params = params.append('page', page.toString());
     }
     const response = await lastValueFrom(
       this.http.get<MovieSearchResult>(
