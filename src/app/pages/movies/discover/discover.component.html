@@ -1,35 +1,50 @@
 <div class="container-fluid">
   <div class="row">
-  <form [formGroup]="searchForm">
-    <mat-form-field>
-      <mat-label>Genres</mat-label>
-      <mat-select formControlName="genre" multiple>
-        <mat-option *ngFor="let genre of movieGenres" [value]="genre.id">{{genre.name}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Sort By</mat-label>
-      <mat-select formControlName="sortBy">
-        <mat-option *ngFor="let option of sortOptions" [value]="option.value">{{option.viewValue}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Year released</mat-label>
-      <input formControlName="year" matInput  type="number"/>
-    </mat-form-field>
-    <button class="btn btn-primary" (click)="search()">Search</button>
+    <form [formGroup]="searchForm">
+      <mat-form-field>
+        <mat-label>Genres</mat-label>
+        <mat-select formControlName="genre" multiple>
+          <mat-option *ngFor="let genre of movieGenres" [value]="genre.id">{{
+            genre.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Sort By</mat-label>
+        <mat-select formControlName="sortBy">
+          <mat-option
+            *ngFor="let option of sortOptions"
+            [value]="option.value"
+            >{{ option.viewValue }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Year released</mat-label>
+        <input formControlName="year" matInput type="number" />
+      </mat-form-field>
+      <button class="btn btn-primary" (click)="search()">Search</button>
     </form>
   </div>
 
   <div class="row">
-    <div class="col-md-6 col-sm-8 col-lg-2 my-5" *ngFor="let movie of moviesFound">
-
-      <div class="card h-100" (click)="routeToMovie(movie)" style="width: 18rem" role="button">
+    <div
+      class="col-md-6 col-sm-8 col-lg-2 my-5"
+      *ngFor="
+        let movie of movies
+          | paginate: { itemsPerPage: 20, currentPage: page, totalItems: total }
+      "
+    >
+      <div
+        class="card h-100"
+        (click)="routeToMovie(movie)"
+        style="width: 18rem"
+        role="button"
+      >
         <img
           src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}"
           class="card-img-top"
           onerror="this.src='assets/rickroll.jpg'"
-
         />
         <div class="card-body">
           <h5 class="card-title">{{ movie.title }}</h5>
@@ -39,6 +54,11 @@
         </div>
       </div>
     </div>
+    <pagination-controls
+        *ngIf="movies?.length > 0"
+        previousLabel="Prev"
+        nextLabel="Next"
+        (pageChange)="handlePageChange($event)"
+      ></pagination-controls>
   </div>
 </div>
-

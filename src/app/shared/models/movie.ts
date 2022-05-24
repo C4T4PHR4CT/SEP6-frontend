@@ -37,8 +37,15 @@ export interface MovieSearchResult {
   results: Movie[];
 }
 
-export interface QueryParameters {
+export interface SearchQueryParameters {
   search?: string;
+  year?: number;
+  page: number;
+}
+
+export interface DiscoveryQueryParameters {
+  sortBy?: string;
+  with_genres?: string[];
   year?: number;
   page: number;
 }
