@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { lastValueFrom, Subscription } from 'rxjs';
-import { Genre, Movie } from 'src/app/shared/models/movie';
+import { Genre, Movie, MovieSearchResult } from 'src/app/shared/models/movie';
 import { MoviesService } from 'src/app/shared/services/movies.service';
 
 @Component({
@@ -41,25 +41,23 @@ export class MovieComponent implements OnInit, OnDestroy {
           }
         });
 
-        this.moviesService.getMovieRecommendations(movieId).then((data) => {
-          //@ts-ignore
-          for (let i = 0; i < data.results.length; i++) {
-            if (this.similarMovies.length <= 4) {
-              //@ts-ignore
-              this.similarMovies.push(data.results[i]);
-            } else {
-              break;
+        this.moviesService
+          .getMovieRecommendations(movieId)
+          .then((data: MovieSearchResult) => {
+            for (let i = 0; i < data.results.length; i++) {
+              if (this.similarMovies.length <= 4) {
+                this.similarMovies.push(data.results[i]);
+              } else {
+                break;
+              }
             }
-          }
-        });
+          });
       })
     );
   }
 
-  public checkIfAny(companies: any): boolean
-  {
-    if(companies.length > 0)
-    {
+  public checkIfAny(companies: any): boolean {
+    if (companies.length > 0) {
       return true;
     }
     return false;

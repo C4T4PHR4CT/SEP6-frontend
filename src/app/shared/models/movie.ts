@@ -30,6 +30,19 @@ export interface ProductionCompany {
   origin_country: string;
 }
 
+export interface MovieSearchResult {
+  page: number;
+  total_results: number;
+  total_pages: number;
+  results: Movie[];
+}
+
+export interface QueryParameters {
+  search?: string;
+  year?: number;
+  page: number;
+}
+
 export const SORT_BY_OPTIONS: SortOptions[] = [
   {
     value: 'popularity.desc',
