@@ -7,7 +7,7 @@ import {
   ReplaySubject,
 } from 'rxjs';
 import { HttpsResponse } from '../models/http.model';
-import { Genre, Movie, SortOptions } from '../models/movie';
+import { Genre, Movie, MovieSearchResult, SortOptions } from '../models/movie';
 
 @Injectable({
   providedIn: 'root',
@@ -36,22 +36,22 @@ export class MoviesService {
     return response;
   }
 
-  public async getMovieRecommendations(movieId: number): Promise<Movie[]> {
+  public async getMovieRecommendations(movieId: number): Promise<MovieSearchResult> {
     let params = this.appendBasics();
     params = params.append('page', '1');
     const response = await lastValueFrom(
-      this.http.get<Movie[]>(
+      this.http.get<MovieSearchResult>(
         `https://api.themoviedb.org/3/movie/${movieId}/similar`, { params }
       )
     );
     return response;
   }
 
-  public async getPopularMovies(page: number): Promise<Movie[]> {
+  public async getPopularMovies(page: number): Promise<MovieSearchResult> {
     let params = this.appendBasics();
     params = params.append('page', page.toString());
     const response = await lastValueFrom(
-      this.http.get<Movie[]>(
+      this.http.get<MovieSearchResult>(
         'https://api.themoviedb.org/3/movie/popular', { params }
       )
     );
@@ -73,7 +73,7 @@ export class MoviesService {
     movieName: string,
     year?: number,
     page?: number
-  ): Promise<Movie[]> {
+  ): Promise<MovieSearchResult> {
     let params = this.appendBasics();
     if (movieName) {
       params = params.append('query', movieName);
@@ -85,7 +85,7 @@ export class MoviesService {
       params = params.append('page', page.toString());
     }
     const response = await lastValueFrom(
-      this.http.get<Movie[]>(`https://api.themoviedb.org/3/search/movie`, {
+      this.http.get<MovieSearchResult>(`https://api.themoviedb.org/3/search/movie`, {
         params,
       })
     );
@@ -99,7 +99,7 @@ export class MoviesService {
     return response;
   }
 
-  public async discoverMovies(sortBy: string, genres:Genre[], year?: number) {
+  public async discoverMovies(sortBy: string, genres:Genre[], year?: number): Promise<MovieSearchResult>{
     console.log(sortBy);
     let params = this.appendBasics();
     params = params.append('sort_by', sortBy);
@@ -110,7 +110,7 @@ export class MoviesService {
       params = params.append('year', year.toString());
     }
     const response = await lastValueFrom(
-      this.http.get<Movie[]>(
+      this.http.get<MovieSearchResult>(
         `https://api.themoviedb.org/3/discover/movie`, { params }
       )
     );

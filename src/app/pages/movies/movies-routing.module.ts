@@ -1,9 +1,9 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { MovieComponent } from "./movie/movie.component";
-import { MoviesComponent } from "./movies.component";
-import { PopularComponent } from "./popular/popular.component";
-import { SearchMoviesComponent } from "./search-movies/search-movies.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { DiscoverComponent } from './discover/discover.component';
+import { MovieComponent } from './movie/movie.component';
+import { MoviesComponent } from './movies.component';
+import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
   {
@@ -12,23 +12,22 @@ const routes: Routes = [
     children: [
       {
         path: 'search',
-        component: PopularComponent
+        component: SearchComponent,
       },
       {
         path: 'discover',
-        component: SearchMoviesComponent,
+        component: DiscoverComponent,
       },
       {
         path: ':id',
-        component: MovieComponent
+        component: MovieComponent,
       },
-      { path: '**', redirectTo: 'popular' }
-    ]
-  }
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class MoviesRoutingModule {}

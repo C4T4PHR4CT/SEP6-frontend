@@ -3,12 +3,12 @@ import { MoviesService } from 'src/app/shared/services/movies.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MovieComponent } from './movie/movie.component';
 import { MoviesRoutingModule } from './movies-routing.module';
-import { SearchMoviesComponent } from './search-movies/search-movies.component';
-import { PopularComponent } from './popular/popular.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { SearchComponent } from './search/search.component';
+import { DiscoverComponent } from './discover/discover.component';
 
 @NgModule({
-  declarations: [SearchMoviesComponent, MovieComponent, PopularComponent],
+  declarations: [DiscoverComponent, MovieComponent, SearchComponent],
   imports: [SharedModule, MoviesRoutingModule, NgxPaginationModule],
   providers: [MoviesService],
 })
