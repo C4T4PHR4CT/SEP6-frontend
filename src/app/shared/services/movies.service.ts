@@ -22,7 +22,7 @@ export class MoviesService {
   public async getMovie(movieId: number): Promise<Movie> {
     const response = await lastValueFrom(
       this.http.get<Movie>(
-        `https://https://sep.nlevi.dev/themoviedb/movie/${movieId}`
+        `https://sep.nlevi.dev/themoviedb/movie/${movieId}`
       )
     );
     return response;
@@ -33,7 +33,7 @@ export class MoviesService {
     params = params.append('page', '1');
     const response = await lastValueFrom(
       this.http.get<MovieSearchResult>(
-        `https://api.themoviedb.org/3/movie/${movieId}/similar`, { params }
+        `https://sep.nlevi.dev/themoviedb/movie/${movieId}/similar`, { params }
       )
     );
     return response;
@@ -44,7 +44,7 @@ export class MoviesService {
     params = params.append('page', page.toString());
     const response = await lastValueFrom(
       this.http.get<MovieSearchResult>(
-        'https://api.themoviedb.org/3/movie/popular', { params }
+        'https://sep.nlevi.dev/themoviedb/movie/popular', { params }
       )
     );
     return response;
@@ -55,7 +55,7 @@ export class MoviesService {
 
     const response = await lastValueFrom(
       this.http.get<Genre[]>(
-        `https://api.themoviedb.org/3/genre/movie/list`, { params }
+        `https://sep.nlevi.dev/themoviedb/genre/movie/list`, { params }
       )
     );
     return response;
@@ -77,14 +77,14 @@ export class MoviesService {
       params = params.append('page', page.toString());
     }
     const response = await lastValueFrom(
-      this.http.get<MovieSearchResult>(`https://api.themoviedb.org/3/search/movie`, {
+      this.http.get<MovieSearchResult>(`https://sep.nlevi.dev/themoviedb/search/movie`, {
         params,
       })
     );
     // } else {
     //   response = await lastValueFrom(
     //     this.http.get<Movie[]>(
-    //       `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&page=1&with_genres=${genres.toString()}`
+    //       `https://sep.nlevi.dev/themoviedb/discover/movie?include_adult=false&include_video=false&page=1&with_genres=${genres.toString()}`
     //     )
     //   );
     // }
@@ -106,7 +106,7 @@ export class MoviesService {
     }
     const response = await lastValueFrom(
       this.http.get<MovieSearchResult>(
-        `https://api.themoviedb.org/3/discover/movie`, { params }
+        `https://sep.nlevi.dev/themoviedb/discover/movie`, { params }
       )
     );
     return response;
