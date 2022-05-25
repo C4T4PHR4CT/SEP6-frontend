@@ -9,6 +9,7 @@ server {
   access_log /var/log/nginx/access.log;
 
   location ^~ /api {
+    add_header Access-Control-Allow-Origin *;
     proxy_pass http://${API_HOST}:${API_PORT};
     proxy_redirect off;
   }
