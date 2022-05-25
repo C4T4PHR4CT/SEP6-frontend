@@ -19,6 +19,12 @@ server {
     proxy_set_header Connection $http_connection;  
   }
 
+  location ^~ /themoviedb {
+    set $args $args&api_key=0859f3a7791c504d30a087517505495c&language=en-US;
+    proxy_pass https://api.themoviedb.org/3;
+    proxy_set_header Host $http_host;
+  }
+
   location /files {
     auth_request /_confirm_token;
     root /usr/private/nginx;
