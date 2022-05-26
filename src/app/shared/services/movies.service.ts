@@ -127,7 +127,7 @@ export class MoviesService {
     if (movie) {
       console.log(movie);
       const response = lastValueFrom(this.http.post(
-        `https://sep.nlevi.dev/themoviedb/favourite/${movie.id}`,
+        `https://sep.nlevi.dev/api/favourite/${movie.id}`,
         {}
       ));
       console.log(response);
@@ -137,7 +137,7 @@ export class MoviesService {
   {
     if(comment)
     {
-      const response = lastValueFrom(this.http.post(`https://sep.nlevi.dev/themoviedb/comment/${movie.id}`, {comment}));
+      const response = lastValueFrom(this.http.get(`https://sep.nlevi.dev/api/comment/1`));
       console.log(response);
     }
   }
