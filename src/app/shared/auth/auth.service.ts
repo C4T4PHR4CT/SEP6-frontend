@@ -72,18 +72,13 @@ export class AuthService {
 
   async confirmToken() {
     const token = localStorage.getItem('access_token');
-    try {
-      const response = await lastValueFrom(
-        this.http.post<any>(`${this.endpoint}/token/confirm`, { token: token })
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await lastValueFrom(
+      this.http.post<any>(`${this.endpoint}/token/confirm`, { token: token })
+    );
+    return response;
   }
 
   gettoken() {
-    console.log(!!localStorage.getItem('access_token'));
     return !!localStorage.getItem('access_token');
   }
 }
