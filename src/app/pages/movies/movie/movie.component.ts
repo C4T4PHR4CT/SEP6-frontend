@@ -64,6 +64,6 @@ export class MovieComponent implements OnInit, OnDestroy {
   }
 
   public routeToMovie(movie: Movie): void {
-    this.router.navigateByUrl(`/movies/${movie.id}`);
+    this.router.navigateByUrl(`home/movies/${movie.id}`);
   }
 }

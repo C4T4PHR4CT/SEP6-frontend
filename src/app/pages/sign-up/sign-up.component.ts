@@ -15,6 +15,10 @@ export class SignUpComponent implements OnInit {
     public authService: AuthService,
     public router: Router
   ) {
+    if(this.authService.isLoggedIn)
+    {
+      this.router.navigateByUrl('/home')
+    }
     this.signupForm = this.fb.group({
       username: [''],
       email: [''],

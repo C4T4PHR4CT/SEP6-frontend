@@ -15,6 +15,10 @@ export class LogInComponent implements OnInit {
     public authService: AuthService,
     public router: Router
   ) {
+    if(this.authService.isLoggedIn)
+    {
+      this.router.navigateByUrl('/home')
+    }
     this.signinForm = this.fb.group({
       username: [''],
       password: [''],
@@ -23,7 +27,6 @@ export class LogInComponent implements OnInit {
   ngOnInit() {}
 
   loginUser() {
-    console.log('sl');
     this.authService.signIn(this.signinForm.value);
   }
 }
