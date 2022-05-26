@@ -3,7 +3,6 @@
     class="col-md-6 col-sm-8 col-lg-2 my-5"
     *ngFor="
       let movie of movies
-        | paginate: { itemsPerPage: 20, currentPage: page, totalItems: total }
     "
   >
     <div
@@ -25,9 +24,4 @@
       </div>
     </div>
   </div>
-  <pagination-controls
-    *ngIf="movies?.length > 0"
-    previousLabel="Prev"
-    nextLabel="Next"
-  ></pagination-controls>
 </div>
