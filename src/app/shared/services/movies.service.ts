@@ -21,19 +21,20 @@ export class MoviesService {
 
   public async getMovie(movieId: number): Promise<Movie> {
     const response = await lastValueFrom(
-      this.http.get<Movie>(
-        `https://sep.nlevi.dev/themoviedb/movie/${movieId}`
-      )
+      this.http.get<Movie>(`https://sep.nlevi.dev/themoviedb/movie/${movieId}`)
     );
     return response;
   }
 
-  public async getMovieRecommendations(movieId: number): Promise<MovieSearchResult> {
+  public async getMovieRecommendations(
+    movieId: number
+  ): Promise<MovieSearchResult> {
     let params = new HttpParams();
     params = params.append('page', '1');
     const response = await lastValueFrom(
       this.http.get<MovieSearchResult>(
-        `https://sep.nlevi.dev/themoviedb/movie/${movieId}/similar`, { params }
+        `https://sep.nlevi.dev/themoviedb/movie/${movieId}/similar`,
+        { params }
       )
     );
     return response;
@@ -44,7 +45,8 @@ export class MoviesService {
     params = params.append('page', page.toString());
     const response = await lastValueFrom(
       this.http.get<MovieSearchResult>(
-        'https://sep.nlevi.dev/themoviedb/movie/popular', { params }
+        'https://sep.nlevi.dev/themoviedb/movie/popular',
+        { params }
       )
     );
     return response;
@@ -55,7 +57,8 @@ export class MoviesService {
 
     const response = await lastValueFrom(
       this.http.get<Genre[]>(
-        `https://sep.nlevi.dev/themoviedb/genre/movie/list`, { params }
+        `https://sep.nlevi.dev/themoviedb/genre/movie/list`,
+        { params }
       )
     );
     return response;
@@ -77,9 +80,12 @@ export class MoviesService {
       params = params.append('page', page.toString());
     }
     const response = await lastValueFrom(
-      this.http.get<MovieSearchResult>(`https://sep.nlevi.dev/themoviedb/search/movie`, {
-        params,
-      })
+      this.http.get<MovieSearchResult>(
+        `https://sep.nlevi.dev/themoviedb/search/movie`,
+        {
+          params,
+        }
+      )
     );
     // } else {
     //   response = await lastValueFrom(
@@ -91,7 +97,12 @@ export class MoviesService {
     return response;
   }
 
-  public async discoverMovies(sortBy: string, genres:Genre[] | string[], year?: number, page?: number): Promise<MovieSearchResult>{
+  public async discoverMovies(
+    sortBy: string,
+    genres: Genre[] | string[],
+    year?: number,
+    page?: number
+  ): Promise<MovieSearchResult> {
     let params = new HttpParams();
     params = params.append('sort_by', sortBy);
     if (genres.length > 0) {
@@ -100,15 +111,34 @@ export class MoviesService {
     if (year) {
       params = params.append('year', year.toString());
     }
-    if(page)
-    {
+    if (page) {
       params = params.append('page', page.toString());
     }
     const response = await lastValueFrom(
       this.http.get<MovieSearchResult>(
-        `https://sep.nlevi.dev/themoviedb/discover/movie`, { params }
+        `https://sep.nlevi.dev/themoviedb/discover/movie`,
+        { params }
       )
     );
     return response;
+  }
+
+  public addFavourite(movie: Movie): void {
+    if (movie) {
+      console.log(movie);
+      const response = lastValueFrom(this.http.post(
+        `https://sep.nlevi.dev/themoviedb/favourite/${movie.id}`,
+        {}
+      ));
+      console.log(response);
+    }
+  }
+  public postComment(comment: string, movie: Movie)
+  {
+    if(comment)
+    {
+      const response = lastValueFrom(this.http.post(`https://sep.nlevi.dev/themoviedb/comment/${movie.id}`, {comment}));
+      console.log(response);
+    }
   }
 }

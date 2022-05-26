@@ -39,6 +39,12 @@
             </div>
           </div>
           <div class="row">
+            <div class="col-sm-2 mt-4 mb-4">
+            <button  *ngIf="selectedMovie" class="btn btn-primary" (click)="addFav()
+            ">Add Favorite</button>
+            </div>
+          </div>
+          <div class="row">
             <h1 class="text-center row">You might also like:</h1>
             <div *ngIf="similarMovies.length === 0">Not enough data to compare!</div>
             <div class="col-md-2 mx-auto my-5" *ngFor="let movie of similarMovies">

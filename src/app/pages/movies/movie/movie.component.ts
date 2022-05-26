@@ -66,4 +66,11 @@ export class MovieComponent implements OnInit, OnDestroy {
   public routeToMovie(movie: Movie): void {
     this.router.navigateByUrl(`home/movies/${movie.id}`);
   }
+
+  public addFav(): void {
+    if(this.selectedMovie) {
+    this.moviesService.addFavourite(this.selectedMovie);
+    this.moviesService.postComment('hello', this.selectedMovie);
+    }
+  }
 }
