@@ -24,9 +24,10 @@ export class SignUpComponent implements OnInit {
   ngOnInit() {}
   registerUser() {
     this.authService.signUp(this.signupForm.value).subscribe((res) => {
-      if (res.result) {
+      console.log(res);
+      if (res.message === "ok") {
         this.signupForm.reset();
-        this.router.navigate(['log-in']);
+        this.router.navigate(['/log-in']);
       }
     });
   }

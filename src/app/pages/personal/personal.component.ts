@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/shared/auth/auth.service';
 
 @Component({
   selector: 'app-personal',
@@ -25,7 +26,7 @@ export class PersonalComponent implements OnInit {
   colorScheme = 'vivid'
 
 
-  constructor() { }
+  constructor(private authService: AuthService) {this.authService.confirmToken()}
 
   ngOnInit(): void {
   }

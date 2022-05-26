@@ -5,7 +5,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, lastValueFrom, Observable, throwError } from 'rxjs';
 import { User } from '../models/user';
 
 @Injectable({
@@ -17,8 +17,15 @@ export class AuthService {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
   });
-  currentUser = {};
-  constructor(private http: HttpClient, public router: Router) {}
+  private userSubject: BehaviorSubject<User> | undefined;
+  public user: Observable<User> | undefined;
+  constructor(private http: HttpClient, public router: Router) {
+    let user = localStorage.getItem('user');
+    if (user) {
+      this.userSubject = new BehaviorSubject<User>(JSON.parse(user));
+      this.user = this.userSubject.asObservable();
+    }
+  }
   // Sign-up
   signUp(user: User): Observable<any> {
     let api = `${this.endpoint}/register`;
@@ -27,13 +34,12 @@ export class AuthService {
   // Sign-in
   signIn(user: User) {
     return this.http
-      .post<any>(`${this.endpoint}/signin`, user)
+      .post<any>(`${this.endpoint}/login`, user)
       .subscribe((res: any) => {
         localStorage.setItem('access_token', res.token);
-        this.getUserProfile(res._id).subscribe((res) => {
-          this.currentUser = res;
-          this.router.navigate(['user-profile/' + res.msg._id]);
-        });
+        localStorage.setItem('user', JSON.stringify(res.user));
+        this.userSubject?.next(user);
+        this.router.navigate(['/home/' + res.user.username]);
       });
   }
   getToken() {
@@ -44,20 +50,12 @@ export class AuthService {
     return authToken !== null ? true : false;
   }
   doLogout() {
+    this.http.post<any>(`${this.endpoint}/token/revoke`, {});
     let removeToken = localStorage.removeItem('access_token');
+    let removeUser = localStorage.removeItem('user');
     if (removeToken == null) {
       this.router.navigate(['log-in']);
     }
-  }
-  // User profile
-  getUserProfile(id: any): Observable<any> {
-    let api = `${this.endpoint}/user-profile/${id}`;
-    return this.http.get(api, { headers: this.headers }).pipe(
-      map((res) => {
-        return res || {};
-      }),
-      catchError(this.handleError)
-    );
   }
   // Error
   handleError(error: HttpErrorResponse) {
@@ -70,5 +68,22 @@ export class AuthService {
       msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     return throwError(msg);
+  }
+
+  async confirmToken() {
+    const token = localStorage.getItem('access_token');
+    try {
+      const response = await lastValueFrom(
+        this.http.post<any>(`${this.endpoint}/token/confirm`, { token: token })
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  gettoken() {
+    console.log(!!localStorage.getItem('access_token'));
+    return !!localStorage.getItem('access_token');
   }
 }
