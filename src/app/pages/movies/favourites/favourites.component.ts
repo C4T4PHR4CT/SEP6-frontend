@@ -17,7 +17,11 @@ export class FavouritesComponent implements OnInit {
 
   ngOnInit(): void {
     this.moviesService.getFavourites().then((data) => {
-      console.log(data);
+      data.forEach((element: number) => {
+        this.moviesService.getMovie(element).then((movie) => {
+          this.movies.push(movie);
+        })
+      });
   });
 }
 
