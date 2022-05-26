@@ -1,0 +1,33 @@
+<div class="row">
+  <div
+    class="col-md-6 col-sm-8 col-lg-2 my-5"
+    *ngFor="
+      let movie of movies
+        | paginate: { itemsPerPage: 20, currentPage: page, totalItems: total }
+    "
+  >
+    <div
+      class="card h-100"
+      (click)="routeToMovie(movie)"
+      style="width: 18rem"
+      role="button"
+    >
+      <img
+        src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}"
+        class="card-img-top"
+        onerror="this.src='assets/rickroll.jpg'"
+      />
+      <div class="card-body">
+        <h5 class="card-title">{{ movie.title }}</h5>
+        <p class="card-text" style="font-size: 12px">
+          {{ movie.overview }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <pagination-controls
+    *ngIf="movies?.length > 0"
+    previousLabel="Prev"
+    nextLabel="Next"
+  ></pagination-controls>
+</div>

@@ -8,9 +8,10 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchComponent } from './search/search.component';
 import { DiscoverComponent } from './discover/discover.component';
 import { MoviesComponent } from './movies.component';
+import { FavouritesComponent } from './favourites/favourites.component';
 
 @NgModule({
-  declarations: [DiscoverComponent, MovieComponent, SearchComponent, MoviesComponent],
+  declarations: [DiscoverComponent, MovieComponent, SearchComponent, MoviesComponent, FavouritesComponent],
   imports: [SharedModule, MoviesRoutingModule, NgxPaginationModule],
   providers: [MoviesService],
 })
