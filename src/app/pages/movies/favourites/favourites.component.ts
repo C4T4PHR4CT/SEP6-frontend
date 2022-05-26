@@ -9,7 +9,7 @@ import { MoviesService } from 'src/app/shared/services/movies.service';
   styleUrls: ['./favourites.component.scss']
 })
 export class FavouritesComponent implements OnInit {
-  public movies: any;
+  public movies: any = [];
   public page = 1;
   public total = 0;
 
