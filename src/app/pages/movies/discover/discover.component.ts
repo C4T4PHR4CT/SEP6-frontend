@@ -123,7 +123,7 @@ export class DiscoverComponent implements OnInit {
   }
 
   public routeToMovie(movie: Movie): void {
-    this.router.navigateByUrl(`/movies/${movie.id}`);
+    this.router.navigateByUrl(`home/movies/${movie.id}`);
   }
 
   public fetchPopularMovies(page: number): void {

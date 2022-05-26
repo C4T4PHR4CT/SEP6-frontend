@@ -1,5 +1,5 @@
 <mat-toolbar color="primary"><mat-toolbar-row>
-  <span>Definitely not IMDB</span>
+  <span>Definitely not IMDB/{{user.username}}</span>
   <span class="space"></span>
   <button [matMenuTriggerFor]="menu" mat-icon-button>
     <mat-icon>menu</mat-icon>
@@ -9,6 +9,6 @@
 <mat-menu #menu="matMenu">
   <ng-template matMenuContent>
     <button mat-menu-item [routerLink]="'personal'">My Profile</button>
-    <button mat-menu-item>Log Out</button>
+    <button mat-menu-item (click)="this.authService.doLogout()">Log Out</button>
   </ng-template>
 </mat-menu>

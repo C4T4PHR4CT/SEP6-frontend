@@ -9,7 +9,7 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       { path: 'movies',
-        loadChildren: () => import('./movies/movies.module').then(m => m.MoviesModule)
+        loadChildren: () => import('./movies/movies.module').then(m => m.MoviesModule),
       },
       { path: 'personal', component: PersonalComponent},
       { path: '**', redirectTo: 'movies/search'}
