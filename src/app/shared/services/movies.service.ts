@@ -133,6 +133,14 @@ export class MoviesService {
       console.log(response);
     }
   }
+
+  public getFavourites() {
+    const response = lastValueFrom(this.http.get<any>(
+      `https://sep.nlevi.dev/api/favourite`
+    ));
+    console.log(response);
+    return response;
+  }
   public postComment(comment: string, movie: Movie)
   {
     if(comment)
