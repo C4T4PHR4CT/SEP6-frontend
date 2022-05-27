@@ -1,69 +1,164 @@
 <div class="container">
-<section class="content-section">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12" *ngIf="selectedMovie">
-        <h1 class="text-center">{{ selectedMovie?.title }}</h1>
-        <p class="lead text-center">{{ selectedMovie?.tagline }}</p>
-        <div class="container">
-          <div class="row">
-            <div class="col-md-4">
-              <img
-                src="https://image.tmdb.org/t/p/original{{ selectedMovie?.poster_path }}"
-                onerror="this.src='assets/rickroll.jpg'"
-
-              />
-            </div>
-            <div class="col-md-8">
-                <div style="text-align: left; font-size: 20px" class="row h-25">{{ selectedMovie?.overview }}</div>
-                <div class="row h4">Vote Average: {{ selectedMovie?.vote_average }} ({{selectedMovie?.vote_count}} votes)</div>
-                <div class="row h4">Length: {{ selectedMovie?.runtime }} min</div>
-                <div class="row h4">Release Date: {{ selectedMovie?.release_date }}</div>
+  <section class="content-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12" *ngIf="selectedMovie">
+          <h1 class="text-center">{{ selectedMovie?.title }}</h1>
+          <p class="lead text-center">{{ selectedMovie?.tagline }}</p>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-4">
+                <img
+                  src="https://image.tmdb.org/t/p/original{{
+                    selectedMovie?.poster_path
+                  }}"
+                  onerror="this.src='assets/rickroll.jpg'"
+                />
+              </div>
+              <div class="col-md-8">
+                <div style="text-align: left; font-size: 20px" class="row h-25">
+                  {{ selectedMovie?.overview }}
+                </div>
+                <div class="row h4">
+                  Vote Average: {{ selectedMovie?.vote_average }} ({{
+                    selectedMovie?.vote_count
+                  }}
+                  votes)
+                </div>
+                <div class="row h4">
+                  Length: {{ selectedMovie?.runtime }} min
+                </div>
+                <div class="row h4">
+                  Release Date: {{ selectedMovie?.release_date }}
+                </div>
                 <div class="row h4">Revenue: {{ selectedMovie?.revenue }}$</div>
-                <div class="row h4" style="display:flex">
+                <div class="row h4" style="display: flex">
                   <mat-chip-list style="padding-left: 4px">
-                  <span style="padding-top: 5px;">Genres: </span>
+                    <span style="padding-top: 5px">Genres: </span>
                     <mat-chip *ngFor="let genre of selectedMovie?.genres">
                       {{ genre.name }}
                     </mat-chip>
                   </mat-chip-list>
                 </div>
-                <div *ngIf="checkIfAny(selectedMovie?.production_companies)" class="row h4" style="display:flex">
+                <div
+                  *ngIf="checkIfAny(selectedMovie?.production_companies)"
+                  class="row h4"
+                  style="display: flex"
+                >
                   <mat-chip-list style="padding-left: 4px">
-                    <span style="padding-top: 5px; padding-right: 5px">Production Companies:</span>
-                    <mat-chip *ngFor="let company of selectedMovie?.production_companies">
+                    <span style="padding-top: 5px; padding-right: 5px"
+                      >Production Companies:</span
+                    >
+                    <mat-chip
+                      *ngFor="
+                        let company of selectedMovie?.production_companies
+                      "
+                    >
                       {{ company.name }}
                     </mat-chip>
                   </mat-chip-list>
                 </div>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-2 mt-4 mb-4">
-            <button  *ngIf="selectedMovie" class="btn btn-primary" (click)="addFav()
-            ">Add Favorite</button>
+            <div class="row">
+              <div class="col-sm-2 mt-4 mb-4">
+                <button
+                  *ngIf="selectedMovie"
+                  class="btn btn-primary"
+                  (click)="addFav()"
+                >
+                  Add Favorite
+                </button>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <h1 class="text-center row">You might also like:</h1>
-            <div *ngIf="similarMovies.length === 0">Not enough data to compare!</div>
-            <div class="col-md-2 mx-auto my-5" *ngFor="let movie of similarMovies">
-              <div class="card h-100" style="width: 10rem" role="button" (click)="routeToMovie(movie)">
-                <img
-                  src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}"
-                  class="card-img-top"
-                  onerror="this.src='assets/rickroll.jpg'"
-
-                />
-                <div class="card-body">
-                  <h5 class="card-title">{{ movie.title }}</h5>
-                </div>
+            <div class="row">
+              <h1 class="text-center row">You might also like:</h1>
+              <div *ngIf="similarMovies.length === 0">
+                Not enough data to compare!
+              </div>
+              <div
+                class="col-md-2 mx-auto my-5"
+                *ngFor="let movie of similarMovies"
+              >
+                <div
+                  class="card h-100"
+                  style="width: 10rem"
+                  role="button"
+                  (click)="routeToMovie(movie)"
+                >
+                  <img
+                    src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}"
+                    class="card-img-top"
+                    onerror="this.src='assets/rickroll.jpg'"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">{{ movie.title }}</h5>
+                  </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <h1 *ngIf="!selectedMovie">Movie not found!</h1>
+        <div class="container mt-5" *ngIf="selectedMovie">
+          <div class="bg-light p-2">
+            <form (ngSubmit)="onSubmit()" [formGroup]="commentForm">
+              <div class="d-flex flex-row align-items-start">
+                <mat-form-field style="width: 100%">
+                  <textarea
+                    formControlName="comment"
+                    placeholder="Comment here..."
+                    matInput
+                    class="form-control ml-1 shadow-none textarea"
+
+                  >
+                  </textarea>
+                  <mat-error
+                    align="end"
+                    *ngIf="commentForm.controls['comment'].hasError('required')"
+                    >Required</mat-error
+                  >
+                </mat-form-field>
+              </div>
+              <div class="mt-2 text-right">
+                <button
+                  class="btn btn-primary btn-sm shadow-none"
+                  type="submit"
+                >
+                  Post comment
+                </button>
+              </div>
+            </form>
+          </div>
+          <div *ngFor="let comment of comments">
+            <div class="d-flex justify-content-center row">
+              <div class="col-md-8">
+                <div class="d-flex flex-column comment-section">
+                  <div class="bg-white p-2">
+                    <div class="d-flex flex-row user-info">
+                      <div
+                        class="d-flex flex-column justify-content-start ml-2"
+                      >
+                        <span class="d-block font-weight-bold name">{{
+                          comment.username
+                        }}</span
+                        ><span class="date text-black-50">{{
+                          comment.date * 1000 | date: "dd/MM/yyyy"
+                        }}</span>
+                      </div>
+                    </div>
+                    <div class="mt-2">
+                      <p class="comment-text">
+                        {{ comment.content }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <h1 *ngIf="!selectedMovie">Movie not found!</h1>
     </div>
-  </div>
-</section>
+  </section>
+</div>

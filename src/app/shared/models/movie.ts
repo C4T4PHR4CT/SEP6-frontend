@@ -50,6 +50,12 @@ export interface DiscoveryQueryParameters {
   page: number;
 }
 
+export interface MovieComment {
+  username: string;
+  content: string;
+  date: number;
+}
+
 export const SORT_BY_OPTIONS: SortOptions[] = [
   {
     value: 'popularity.desc',

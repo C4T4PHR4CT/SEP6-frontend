@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom, ReplaySubject } from 'rxjs';
-import { Genre, Movie, MovieSearchResult } from '../models/movie';
+import { Genre, Movie, MovieComment, MovieSearchResult } from '../models/movie';
 
 @Injectable({
   providedIn: 'root',
@@ -141,12 +141,18 @@ export class MoviesService {
     console.log(response);
     return response;
   }
-  public postComment(comment: string, movie: Movie)
+  public postComment(comment: string, movieId: number)
   {
     if(comment)
     {
-      const response = lastValueFrom(this.http.get(`https://sep.nlevi.dev/api/comment/1`));
+      const response = lastValueFrom(this.http.post(`https://sep.nlevi.dev/api/comment/${movieId}`, {content: comment}));
       console.log(response);
     }
   }
+  public getComments(movieId: number): Promise<MovieComment[]>
+  {
+    const response = lastValueFrom(this.http.get<MovieComment[]>(`https://sep.nlevi.dev/api/comment/${movieId}`));
+    return response;
+  }
+
 }
