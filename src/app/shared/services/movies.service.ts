@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { lastValueFrom, ReplaySubject } from 'rxjs';
+import { catchError, lastValueFrom, map, Observable, ReplaySubject, shareReplay, switchMap } from 'rxjs';
 import { Genre, Movie, MovieComment, MovieSearchResult } from '../models/movie';
 
 @Injectable({
@@ -154,5 +154,7 @@ export class MoviesService {
     const response = lastValueFrom(this.http.get<MovieComment[]>(`https://sep.nlevi.dev/api/comment/${movieId}`));
     return response;
   }
+
+
 
 }

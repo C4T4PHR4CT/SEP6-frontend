@@ -1,12 +1,11 @@
 import { MovieComment } from './../../../shared/models/movie';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {  Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Genre, Movie, MovieSearchResult } from 'src/app/shared/models/movie';
 import { MoviesService } from 'src/app/shared/services/movies.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/shared/auth/auth.service';
-import { User } from 'src/app/shared/models/user';
 
 @Component({
   selector: 'app-movie',
@@ -17,9 +16,9 @@ export class MovieComponent implements OnInit, OnDestroy {
   public selectedMovie: Movie | null = null;
   public genres: Genre[] = [];
   public similarMovies: Movie[] = [];
-  public comments: MovieComment[] = [{username: 'bob', content: 'movie sucks', date: 1619110385}, {username: 'bob', content: 'movie is fucking garbage!', date: 1619110385}];
+  public comments: MovieComment[] = [];
   public commentForm: FormGroup = this.fb.group({
-    comment: ['', [Validators.required]]
+    comment: ['', [Validators.required]],
   });
   private user: any;
   private subscription: Subscription = new Subscription();
@@ -29,14 +28,13 @@ export class MovieComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
     this.user = localStorage.getItem('user');
-    if(this.user)
-    {
+    if (this.user) {
       this.user = JSON.parse(this.user);
     }
   }
@@ -48,7 +46,6 @@ export class MovieComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.route.params.subscribe(async (params) => {
         const movieId = params['id'];
-
         this.moviesService.getMovie(movieId).then((data) => {
           if (data) {
             this.selectedMovie = data;
@@ -67,6 +64,10 @@ export class MovieComponent implements OnInit, OnDestroy {
               }
             }
           });
+
+        this.moviesService.getComments(movieId).then((data: MovieComment[]) => {
+          this.comments = data;
+        });
       })
     );
   }
@@ -83,17 +84,23 @@ export class MovieComponent implements OnInit, OnDestroy {
   }
 
   public addFav(): void {
-    if(this.selectedMovie) {
-    this.moviesService.addFavourite(this.selectedMovie);
+    if (this.selectedMovie) {
+      this.moviesService.addFavourite(this.selectedMovie);
     }
   }
 
-  public onSubmit(): void
-  {
-    if(this.selectedMovie)
-    {
-    this.moviesService.postComment(this.commentForm.value.comment, this.selectedMovie.id);
-    this.comments.push({username: this.user.username, content: this.commentForm.value.comment, date: new Date().getTime()/1000});
+  public onSubmit(): void {
+    if (this.selectedMovie && this.commentForm.valid) {
+      this.moviesService.postComment(
+        this.commentForm.value.comment,
+        this.selectedMovie.id
+      );
+      this.comments.push({
+        username: this.user.username,
+        content: this.commentForm.value.comment,
+        date: new Date().getTime() / 1000,
+      });
+      this.commentForm.setValue({ comment: '' });
     }
   }
 }
