@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { Genre, Movie, MovieSearchResult } from 'src/app/shared/models/movie';
 import { MoviesService } from 'src/app/shared/services/movies.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/shared/auth/auth.service';
 
 @Component({
   selector: 'app-movie',
@@ -25,7 +24,6 @@ export class MovieComponent implements OnInit, OnDestroy {
 
   constructor(
     public moviesService: MoviesService,
-    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder
@@ -90,7 +88,7 @@ export class MovieComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if (this.selectedMovie && this.commentForm.valid) {
+    if (this.selectedMovie && this.commentForm.valid && this.commentForm.value.commentForm !== '') {
       this.moviesService.postComment(
         this.commentForm.value.comment,
         this.selectedMovie.id

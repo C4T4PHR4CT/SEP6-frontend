@@ -152,6 +152,7 @@ export class MoviesService {
   public getComments(movieId: number): Promise<MovieComment[]>
   {
     const response = lastValueFrom(this.http.get<MovieComment[]>(`https://sep.nlevi.dev/api/comment/${movieId}`));
+    console.log(response);
     return response;
   }
 
