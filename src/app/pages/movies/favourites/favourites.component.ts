@@ -16,13 +16,18 @@ export class FavouritesComponent implements OnInit {
   constructor(private router: Router, private moviesService: MoviesService) { }
 
   ngOnInit(): void {
-    this.moviesService.getFavourites().then((data) => {
-      data.forEach((element: number) => {
-        this.moviesService.getMovie(element).then((movie) => {
-          this.movies.push(movie);
-        })
-      });
-  });
+  //   this.moviesService.getFavourites().subscribe(data => {
+
+  //   })
+
+  //   .then((data) => {
+  //     data.forEach((element: number) => {
+  //       this.moviesService.getMovie(element).then((movie) => {
+  //         this.movies.push(movie);
+  //       })
+  //     });
+  // });
+  console.log(this.moviesService.getFavourites());
 }
 
 
