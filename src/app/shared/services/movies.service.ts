@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, lastValueFrom, map, Observable, ReplaySubject, shareReplay, switchMap } from 'rxjs';
+import { catchError, lastValueFrom, map, mergeMap, Observable, ReplaySubject, shareReplay, switchMap } from 'rxjs';
 import { Genre, Movie, MovieComment, MovieSearchResult } from '../models/movie';
 
 @Injectable({
@@ -8,6 +8,7 @@ import { Genre, Movie, MovieComment, MovieSearchResult } from '../models/movie';
 })
 export class MoviesService {
   public movie$: ReplaySubject<Movie> = new ReplaySubject<Movie>();
+
   constructor(private http: HttpClient) {}
 
   public setSelectedMovie(movie: Movie): void {
@@ -87,13 +88,6 @@ export class MoviesService {
         }
       )
     );
-    // } else {
-    //   response = await lastValueFrom(
-    //     this.http.get<Movie[]>(
-    //       `https://sep.nlevi.dev/themoviedb/discover/movie?include_adult=false&include_video=false&page=1&with_genres=${genres.toString()}`
-    //     )
-    //   );
-    // }
     return response;
   }
 
@@ -135,10 +129,12 @@ export class MoviesService {
   }
 
   public getFavourites() {
-    const response = lastValueFrom(this.http.get<any>(
+    const response = this.http.get<any>(
       `https://sep.nlevi.dev/api/favourite`
-    ));
-    console.log(response);
+    ).pipe(mergeMap(favourites => {
+      return favourites.map((favourite: number) =>  {return this.getMovie(favourite)})
+     }));
+     console.log(response);
     return response;
   }
   public postComment(comment: string, movieId: number)
