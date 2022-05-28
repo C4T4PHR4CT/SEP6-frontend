@@ -27,10 +27,7 @@ export class FavouritesComponent implements OnInit {
   //       })
   //     });
   // });
-  this.moviesService.getFavourites().subscribe(data => {
-    console.log(data);
-    this.movies = data;
-  });
+  this.movies = this.moviesService.getFavourites();
 }
 
 
