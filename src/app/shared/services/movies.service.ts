@@ -1,15 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  catchError,
-  lastValueFrom,
-  map,
-  mergeMap,
-  Observable,
-  ReplaySubject,
-  shareReplay,
-  switchMap,
-} from 'rxjs';
+import { catchError, lastValueFrom, map, Observable, ReplaySubject, shareReplay, switchMap } from 'rxjs';
 import { Genre, Movie, MovieComment, MovieSearchResult } from '../models/movie';
 
 @Injectable({
@@ -17,7 +8,6 @@ import { Genre, Movie, MovieComment, MovieSearchResult } from '../models/movie';
 })
 export class MoviesService {
   public movie$: ReplaySubject<Movie> = new ReplaySubject<Movie>();
-
   constructor(private http: HttpClient) {}
 
   public setSelectedMovie(movie: Movie): void {
@@ -97,6 +87,13 @@ export class MoviesService {
         }
       )
     );
+    // } else {
+    //   response = await lastValueFrom(
+    //     this.http.get<Movie[]>(
+    //       `https://sep.nlevi.dev/themoviedb/discover/movie?include_adult=false&include_video=false&page=1&with_genres=${genres.toString()}`
+    //     )
+    //   );
+    // }
     return response;
   }
 
@@ -129,44 +126,35 @@ export class MoviesService {
   public addFavourite(movie: Movie): void {
     if (movie) {
       console.log(movie);
-      const response = lastValueFrom(
-        this.http.post(`https://sep.nlevi.dev/api/favourite/${movie.id}`, {})
-      );
+      const response = lastValueFrom(this.http.post(
+        `https://sep.nlevi.dev/api/favourite/${movie.id}`,
+        {}
+      ));
       console.log(response);
     }
   }
 
   public getFavourites() {
-    let favourites: Movie[] = [];
-    const response = lastValueFrom(
-      this.http.get<any>(`https://sep.nlevi.dev/api/favourite`)
-    ).then((data) => {
-      data.forEach((element: { id: number }) => {
-        this.getMovie(element.id).then((movie) => {
-          favourites.push(movie);
-        });
-      });
-    });
-
-    return favourites;
+    const response = lastValueFrom(this.http.get<any>(
+      `https://sep.nlevi.dev/api/favourite`
+    ));
+    return response;
   }
-  public postComment(comment: string, movieId: number) {
-    if (comment) {
-      const response = lastValueFrom(
-        this.http.post(`https://sep.nlevi.dev/api/comment/${movieId}`, {
-          content: comment,
-        })
-      );
+  public postComment(comment: string, movieId: number)
+  {
+    if(comment)
+    {
+      const response = lastValueFrom(this.http.post(`https://sep.nlevi.dev/api/comment/${movieId}`, {content: comment}));
       console.log(response);
     }
   }
-  public getComments(movieId: number): Promise<MovieComment[]> {
-    const response = lastValueFrom(
-      this.http.get<MovieComment[]>(
-        `https://sep.nlevi.dev/api/comment/${movieId}`
-      )
-    );
+  public getComments(movieId: number): Promise<MovieComment[]>
+  {
+    const response = lastValueFrom(this.http.get<MovieComment[]>(`https://sep.nlevi.dev/api/comment/${movieId}`));
     console.log(response);
     return response;
   }
+
+
+
 }
