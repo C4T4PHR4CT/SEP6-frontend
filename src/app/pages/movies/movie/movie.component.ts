@@ -88,7 +88,11 @@ export class MovieComponent implements OnInit, OnDestroy {
 
   public addFav(): void {
     if (this.selectedMovie) {
-      this.moviesService.addFavourite(this.selectedMovie);
+      if (this.isFavourite)
+        this.moviesService.removeFavourite(this.selectedMovie);
+      else
+        this.moviesService.addFavourite(this.selectedMovie);
+      this.isFavourite = !this.isFavourite;
     }
   }
 
@@ -104,6 +108,7 @@ export class MovieComponent implements OnInit, OnDestroy {
         date: new Date().getTime() / 1000,
       });
       this.commentForm.setValue({ comment: '' });
+      this.commentForm.setErrors(null);
     }
   }
 }
