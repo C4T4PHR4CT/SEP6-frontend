@@ -74,9 +74,8 @@ export class MovieComponent implements OnInit, OnDestroy {
           this.isFavourite = data.includes(movieId);
         });
 
-        this.commentForm.valueChanges.subscribe((_val) => {
-          this.commentForm.controls['comment'].setErrors(null);
-        });
+        this.commentForm.valueChanges.subscribe(_val => {this.commentForm.controls["comment"].setErrors(null);});
+
         this.moviesService.getCredits(movieId).then((data: any) => {
           let cast = data.cast;
           let crew = data.crew;
@@ -124,11 +123,9 @@ export class MovieComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if (
-      this.selectedMovie &&
-      this.commentForm.valid &&
-      this.commentForm.value.commentForm !== ''
-    ) {
+    if ((this.commentForm.controls["comment"]?.value ?? "").trim() === "") {
+      this.commentForm.controls["comment"].setErrors({'Required': true});
+    } else if (this.selectedMovie && this.commentForm.valid && this.commentForm.value.commentForm !== '') {
       this.moviesService.postComment(
         this.commentForm.value.comment,
         this.selectedMovie.id
@@ -138,11 +135,8 @@ export class MovieComponent implements OnInit, OnDestroy {
         content: this.commentForm.value.comment,
         date: new Date().getTime() / 1000,
       });
-      this.commentForm.reset();
-      this.commentForm.controls['comment'].setErrors(null);
-      this.commentForm.markAsPristine();
-      this.commentForm.markAsUntouched();
-      this.commentForm.updateValueAndValidity();
+      this.commentForm.setValue({ comment: '' });
+      this.commentForm.controls["comment"].setErrors(null);
     }
   }
 }
