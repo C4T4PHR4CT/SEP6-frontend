@@ -52,7 +52,7 @@ export class AuthService {
   doLogout() {
     this.http.post<any>(`${this.endpoint}/token/revoke`, {});
     let removeToken = localStorage.removeItem('access_token');
-    let removeUser = localStorage.removeItem('user');
+    localStorage.removeItem('user');
     if (removeToken == null) {
       this.router.navigate(['log-in']);
     }
@@ -72,10 +72,9 @@ export class AuthService {
 
   async confirmToken() {
     const token = localStorage.getItem('access_token');
-    const response = await lastValueFrom(
+    return await lastValueFrom(
       this.http.post<any>(`${this.endpoint}/token/confirm`, { token: token })
     );
-    return response;
   }
 
   gettoken() {

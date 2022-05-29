@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Genre, Movie, MovieSearchResult } from 'src/app/shared/models/movie';
 import { MoviesService } from 'src/app/shared/services/movies.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-movie',
@@ -57,9 +57,9 @@ export class MovieComponent implements OnInit, OnDestroy {
         this.moviesService
           .getMovieRecommendations(movieId)
           .then((data: MovieSearchResult) => {
-            for (let i = 0; i < data.results.length; i++) {
+            for (const similar of data.results) {
               if (this.similarMovies.length <= 4) {
-                this.similarMovies.push(data.results[i]);
+                this.similarMovies.push(similar);
               } else {
                 break;
               }
