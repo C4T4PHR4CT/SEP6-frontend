@@ -7,24 +7,7 @@ import { AuthService } from 'src/app/shared/auth/auth.service';
   styleUrls: ['./personal.component.scss']
 })
 export class PersonalComponent implements OnInit {
-  single: any[] = [{
-    name: 'John Beeena',
-    value: 26
-  }];
-
-
-  // options
-  showXAxis = true;
-  showYAxis = true;
-  gradient = true;
-  showLegend = false;
-  showDataLabel = true;
-  showXAxisLabel = true;
-  xAxisLabel = 'Save some';
-  showYAxisLabel = true;
-  yAxisLabel = 'Sussies for me';
-  colorScheme = 'vivid'
-
+  public user: {username: string, email: string} = JSON.parse(localStorage.getItem("user") ?? "{}");
 
   constructor(private authService: AuthService) {this.authService.confirmToken()}
 
