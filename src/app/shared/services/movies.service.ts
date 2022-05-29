@@ -127,7 +127,9 @@ export class MoviesService {
   }
 
   public postComment(comment: string, movieId: number) {
+    console.log("post 2");
     if (comment) {
+      console.log("post 3");
       this.http.post(`https://sep.nlevi.dev/api/comment/${movieId}`, {
         content: comment,
       });
