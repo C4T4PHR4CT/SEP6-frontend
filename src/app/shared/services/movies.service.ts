@@ -100,16 +100,16 @@ export class MoviesService {
     );
   }
 
-  public addFavourite(movie: Movie): void {
-    if (movie) {
-      this.http.post(`https://sep.nlevi.dev/api/favourite/${movie.id}`, {});
-    }
+  public addFavourite(movie: Movie): Promise<void> {
+    return lastValueFrom(
+      this.http.post<void>(`https://sep.nlevi.dev/api/favourite/${movie.id}`, {})
+    );
   }
 
-  public removeFavourite(movie: Movie): void {
-    if (movie) {
-      this.http.delete(`https://sep.nlevi.dev/api/favourite/${movie.id}`, {});
-    }
+  public removeFavourite(movie: Movie): Promise<void> {
+    return lastValueFrom(
+      this.http.delete<void>(`https://sep.nlevi.dev/api/favourite/${movie.id}`, {})
+    );
   }
 
   public getFavourites() {
@@ -126,14 +126,10 @@ export class MoviesService {
     );
   }
 
-  public postComment(comment: string, movieId: number) {
-    console.log("post 2");
-    if (comment) {
-      console.log("post 3");
-      this.http.post(`https://sep.nlevi.dev/api/comment/${movieId}`, {
-        content: comment,
-      });
-    }
+  public postComment(comment: string, movieId: number): Promise<void> {
+    return lastValueFrom(
+      this.http.post<void>(`https://sep.nlevi.dev/api/comment/${movieId}`, {content: comment})
+    );
   }
 
   public getComments(movieId: number): Promise<MovieComment[]> {
