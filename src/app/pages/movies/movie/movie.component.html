@@ -7,7 +7,7 @@
           <p class="lead text-center">{{ selectedMovie?.tagline }}</p>
           <div class="container">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <img
                   src="https://image.tmdb.org/t/p/original{{
                     selectedMovie?.poster_path
@@ -15,7 +15,7 @@
                   onerror="this.src='assets/rickroll.jpg'"
                 />
               </div>
-              <div class="col-md-8">
+              <div class="col-md-6">
                 <div style="text-align: left; font-size: 20px" class="row h-25">
                   {{ selectedMovie?.overview }}
                 </div>
@@ -58,6 +58,47 @@
                     </mat-chip>
                   </mat-chip-list>
                 </div>
+                <div style="align-items: center; margin-bottom: 5px;" class="row">
+                  Actors:                  <div
+                    class="col-md-5 col-sm-8 col-lg-2"
+                    *ngFor="let actor of actors"
+                  >
+                    <div class="card" style="height: 193px;">
+                      <img
+                        src="https://image.tmdb.org/t/p/w500{{
+                          actor.profile_path
+                        }}"
+                        class="card-img-top"
+                        onerror="this.src='assets/rickroll.jpg'"
+                      />
+                      <div class="card-body">
+                        <small style="font-size:10px;"class="card-title">{{ actor.name }}</small>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="align-items:center" class="row">
+                  Directors:
+                  <div
+                    class="col-md-5 col-sm-8 col-lg-2"
+                    *ngFor="let director of directors"
+                  >
+                    <div class="card" style="height: 193px;">
+                      <img
+                        src="https://image.tmdb.org/t/p/w500{{
+                          director.profile_path
+                        }}"
+                        class="card-img-top"
+                        onerror="this.src='assets/rickroll.jpg'"
+                      />
+                      <div class="card-body">
+                        <small style="font-size:10px;"class="card-title">{{ director.name }}</small>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row">
@@ -67,7 +108,9 @@
                   class="btn btn-primary"
                   (click)="addFav()"
                 >
-                  {{ isFavourite ? "Remove from favorites" : "Add to favorites" }}
+                  {{
+                    isFavourite ? "Remove from favorites" : "Add to favorites"
+                  }}
                 </button>
               </div>
             </div>
@@ -110,7 +153,6 @@
                     placeholder="Comment here..."
                     matInput
                     class="form-control ml-1 shadow-none textarea"
-
                   >
                   </textarea>
                   <mat-error

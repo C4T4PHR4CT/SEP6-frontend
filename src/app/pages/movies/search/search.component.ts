@@ -87,7 +87,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public routeToMovie(movie: Movie): void {
-    this.moviesService.setSelectedMovie(movie);
     this.router.navigateByUrl(`home/movies/${movie.id}`);
   }
 

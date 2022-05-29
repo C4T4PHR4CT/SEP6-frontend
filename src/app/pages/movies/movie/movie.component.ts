@@ -16,7 +16,9 @@ export class MovieComponent implements OnInit, OnDestroy {
   public genres: Genre[] = [];
   public similarMovies: Movie[] = [];
   public comments: MovieComment[] = [];
-  public isFavourite: boolean = true;
+  public actors: any;
+  public directors: any;
+  public isFavourite: boolean = false;
   public commentForm: FormGroup = this.fb.group({
     comment: ['', []],
   });
@@ -73,6 +75,28 @@ export class MovieComponent implements OnInit, OnDestroy {
         });
 
         this.commentForm.valueChanges.subscribe(_val => {this.commentForm.controls["comment"].setErrors(null);});
+        this.moviesService.getCredits(movieId).then((data: any) => {
+          let cast = data.cast;
+          let crew = data.crew;
+          // filter for directors and then filter again to remove duplicates since API sends duplicates for some reason
+          this.directors = crew
+            .filter(
+              (member: { known_for_department: string; name: string }) =>
+                member.known_for_department === 'Directing'
+            )
+            .filter(
+              (value: any, index: any, array: any[]) =>
+                array.findIndex((v2) => v2.id === value.id) === index
+            );
+          if (this.directors.length > 5) {
+            this.directors = this.directors.slice(0, 5);
+          }
+          cast.sort(
+            (a: { popularity: number }, b: { popularity: number }) =>
+              b.popularity - a.popularity
+          );
+          this.actors = cast.slice(0, 5);
+        });
       })
     );
   }
@@ -92,16 +116,17 @@ export class MovieComponent implements OnInit, OnDestroy {
     if (this.selectedMovie) {
       if (this.isFavourite)
         this.moviesService.removeFavourite(this.selectedMovie);
-      else
-        this.moviesService.addFavourite(this.selectedMovie);
+      else this.moviesService.addFavourite(this.selectedMovie);
       this.isFavourite = !this.isFavourite;
     }
   }
 
   public onSubmit(): void {
-    if ((this.commentForm.controls["comment"]?.value ?? "").trim() === "") {
-      this.commentForm.controls["comment"].setErrors({'Required': true});
-    } else if (this.selectedMovie && this.commentForm.valid && this.commentForm.value.commentForm !== '') {
+    if (
+      this.selectedMovie &&
+      this.commentForm.valid &&
+      this.commentForm.value.commentForm !== ''
+    ) {
       this.moviesService.postComment(
         this.commentForm.value.comment,
         this.selectedMovie.id
@@ -111,8 +136,11 @@ export class MovieComponent implements OnInit, OnDestroy {
         content: this.commentForm.value.comment,
         date: new Date().getTime() / 1000,
       });
-      this.commentForm.setValue({ comment: '' });
-      this.commentForm.controls["comment"].setErrors(null);
+      this.commentForm.reset();
+      this.commentForm.controls['comment'].setErrors(null);
+      this.commentForm.markAsPristine();
+      this.commentForm.markAsUntouched();
+      this.commentForm.updateValueAndValidity();
     }
   }
 }
