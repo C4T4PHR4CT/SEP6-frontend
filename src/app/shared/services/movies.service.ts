@@ -134,6 +134,17 @@ export class MoviesService {
     }
   }
 
+  public removeFavourite(movie: Movie): void {
+    if (movie) {
+      console.log(movie);
+      const response = lastValueFrom(this.http.delete(
+        `https://sep.nlevi.dev/api/favourite/${movie.id}`,
+        {}
+      ));
+      console.log(response);
+    }
+  }
+
   public getFavourites() {
     const response = lastValueFrom(this.http.get<any>(
       `https://sep.nlevi.dev/api/favourite`

@@ -16,6 +16,7 @@ export class MovieComponent implements OnInit, OnDestroy {
   public genres: Genre[] = [];
   public similarMovies: Movie[] = [];
   public comments: MovieComment[] = [];
+  public isFavourite: boolean = true;
   public commentForm: FormGroup = this.fb.group({
     comment: ['', [Validators.required]],
   });
@@ -65,6 +66,10 @@ export class MovieComponent implements OnInit, OnDestroy {
 
         this.moviesService.getComments(movieId).then((data: MovieComment[]) => {
           this.comments = data;
+        });
+
+        this.moviesService.getFavourites().then((data: Array<string>) => {
+          this.isFavourite = data.includes(movieId);
         });
       })
     );
