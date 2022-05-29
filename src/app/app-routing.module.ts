@@ -10,13 +10,13 @@ const routes: Routes = [
     component: LogInComponent
   },
   {
+    path: 'sign-up',
+    component: SignUpComponent
+  },
+  {
     path: 'home',
     loadChildren: () => import('./pages/home.module').then(m => m.HomeModule),
     canActivate: [AuthGuard]
-  },
-  {
-    path: 'sign-up',
-    component: SignUpComponent
   },
   {
     path: '',
