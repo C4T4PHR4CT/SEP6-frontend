@@ -1,4 +1,3 @@
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgModule } from '@angular/core';
 import { MoviesService } from 'src/app/shared/services/movies.service';
 import { SharedModule } from 'src/app/shared/shared.module';

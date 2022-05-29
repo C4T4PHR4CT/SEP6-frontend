@@ -3,8 +3,6 @@ import {
   Genre,
   Movie,
   MovieSearchResult,
-  SearchQueryParameters,
-  SortOptions,
   SORT_BY_OPTIONS,
 } from '../../../shared/models/movie';
 import { Component, OnInit } from '@angular/core';
