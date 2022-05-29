@@ -125,9 +125,9 @@ export class MovieComponent implements OnInit, OnDestroy {
   public onSubmit(): void {
     if ((this.commentForm.controls["comment"]?.value ?? "").trim() === "") {
       this.commentForm.controls["comment"].setErrors({'Required': true});
-    } else if (this.selectedMovie && this.commentForm.valid && this.commentForm.value.commentForm !== '') {
+    } else if (this.selectedMovie && this.commentForm.valid) {
       this.moviesService.postComment(
-        this.commentForm.value.comment,
+        this.commentForm.controls["comment"].value,
         this.selectedMovie.id
       );
       this.comments.push({
