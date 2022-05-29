@@ -107,8 +107,7 @@ export class MovieComponent implements OnInit, OnDestroy {
         content: this.commentForm.value.comment,
         date: new Date().getTime() / 1000,
       });
-      this.commentForm.setValue({ comment: '' });
-      this.commentForm.setErrors(null);
+      this.commentForm.reset();
     }
   }
 }
