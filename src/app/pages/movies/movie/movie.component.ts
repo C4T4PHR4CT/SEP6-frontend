@@ -20,7 +20,7 @@ export class MovieComponent implements OnInit, OnDestroy {
   public directors: any;
   public isFavourite: boolean = false;
   public commentForm: FormGroup = this.fb.group({
-    comment: ['', []],
+    comment: ['', [Validators.required]],
   });
   private user: any;
   private subscription: Subscription = new Subscription();
@@ -74,7 +74,6 @@ export class MovieComponent implements OnInit, OnDestroy {
           this.isFavourite = data.includes(movieId);
         });
 
-        this.commentForm.valueChanges.subscribe(_val => {this.commentForm.controls["comment"].setErrors(null);});
         this.moviesService.getCredits(movieId).then((data: any) => {
           let cast = data.cast;
           let crew = data.crew;
@@ -137,10 +136,8 @@ export class MovieComponent implements OnInit, OnDestroy {
         date: new Date().getTime() / 1000,
       });
       this.commentForm.reset();
-      this.commentForm.controls['comment'].setErrors(null);
-      this.commentForm.markAsPristine();
-      this.commentForm.markAsUntouched();
-      this.commentForm.updateValueAndValidity();
+      this.commentForm.controls['comment'].markAsPristine();
+      this.commentForm.controls['comment'].markAsUntouched();
     }
   }
 }
