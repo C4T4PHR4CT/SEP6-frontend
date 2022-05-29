@@ -16,6 +16,7 @@ export class MovieComponent implements OnInit, OnDestroy {
   public genres: Genre[] = [];
   public similarMovies: Movie[] = [];
   public comments: MovieComment[] = [];
+  public isFavourite: boolean = true;
   public commentForm: FormGroup = this.fb.group({
     comment: ['', [Validators.required]],
   });
@@ -66,6 +67,10 @@ export class MovieComponent implements OnInit, OnDestroy {
         this.moviesService.getComments(movieId).then((data: MovieComment[]) => {
           this.comments = data;
         });
+
+        this.moviesService.getFavourites().then((data: Array<string>) => {
+          this.isFavourite = data.includes(movieId);
+        });
       })
     );
   }
@@ -83,7 +88,11 @@ export class MovieComponent implements OnInit, OnDestroy {
 
   public addFav(): void {
     if (this.selectedMovie) {
-      this.moviesService.addFavourite(this.selectedMovie);
+      if (this.isFavourite)
+        this.moviesService.removeFavourite(this.selectedMovie);
+      else
+        this.moviesService.addFavourite(this.selectedMovie);
+      this.isFavourite = !this.isFavourite;
     }
   }
 
@@ -98,7 +107,11 @@ export class MovieComponent implements OnInit, OnDestroy {
         content: this.commentForm.value.comment,
         date: new Date().getTime() / 1000,
       });
-      this.commentForm.setValue({ comment: '' });
+      this.commentForm.reset();
+      this.commentForm.controls["comment"].setErrors(null);
+      this.commentForm.markAsPristine();
+      this.commentForm.markAsUntouched();
+      this.commentForm.updateValueAndValidity();
     }
   }
 }
